@@ -313,6 +313,7 @@
     }
     .radio-option input { accent-color: var(--primary); }
     .submit-btn {
+      position: relative;
       width: 100%;
       padding: 16px 20px;
       font-family: 'Bradley Hand', cursive;
@@ -326,6 +327,11 @@
       transition: background 0.2s, color 0.2s;
     }
     .submit-btn:hover { filter: brightness(1.1); }
+    .submit-btn.loading { pointer-events: none; cursor: wait; }
+    .submit-btn .btn-loader { display: none; vertical-align: middle; }
+    .submit-btn.loading .btn-text { visibility: hidden; }
+    .submit-btn.loading .btn-loader { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(180, 131, 90, 0.3); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.7s linear infinite; position: absolute; left: 50%; top: 50%; margin: -10px 0 0 -10px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
     .thank-you {
       display: none;
       text-align: center;
@@ -411,14 +417,14 @@
           <label class="radio-option"><input type="radio" name="attend" value="will_be" checked> <span class="lang-ru">Буду</span><span class="lang-kz">Келемін</span></label>
           <label class="radio-option"><input type="radio" name="attend" value="will_not_be"> <span class="lang-ru">Не буду</span><span class="lang-kz">Келе алмаймын</span></label>
         </fieldset>
-        <button type="submit" class="submit-btn"><span class="lang-ru">Отправить</span><span class="lang-kz">Жіберу</span></button>
+        <button type="submit" class="submit-btn"><span class="btn-text"><span class="lang-ru">Отправить</span><span class="lang-kz">Жіберу</span></span><span class="btn-loader" aria-hidden="true"></span></button>
       </form>
     </section>
   </div>
 
   <script>
     // Set this to your backend or form service URL to save responses (e.g. Formspree, Netlify Forms, or your API).
-    const FORM_ENDPOINT = '';
+    const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz-K55OLssQPDjkD581bxAecIZiBRCDM37wH7XESBrzvBL_HHuJUewgV3Ja59vgegST/exec';
 
     // Language switcher
     function setLang(lang) {
@@ -453,13 +459,14 @@
       const payload = { name, attend: attendValue };
 
       if (FORM_ENDPOINT) {
-        // Formspree and most form services expect form data, not JSON
-        const formData = new FormData();
+        var btn = document.querySelector('#rsvpForm .submit-btn');
+        if (btn) { btn.classList.add('loading'); btn.disabled = true; }
+        var formData = new FormData();
         formData.append('name', name);
         formData.append('attend', attendValue);
         fetch(FORM_ENDPOINT, { method: 'POST', body: formData })
-          .then(() => showThankYou())
-          .catch(() => { console.log('Form data:', payload); showThankYou(); });
+          .then(function() { showThankYou(); })
+          .catch(function() { console.log('Form data:', payload); showThankYou(); });
       } else {
         console.log('Feedback payload:', payload);
         showThankYou();
