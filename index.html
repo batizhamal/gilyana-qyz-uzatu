@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=390, user-scalable=no">
+  <title>Қыз Ұзату - Гиляна</title>
+  <style>
+    @font-face {
+      font-family: 'Bradley Hand';
+      src: local('Bradley Hand ITC'), local('Bradley Hand'),
+           url('./BradleyHand.woff2') format('woff2'),
+           url('./BradleyHand.woff') format('woff'),
+           url('./BradleyHand.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    :root {
+      --primary: #755a49;
+      --secondary: #c5b29a;
+      --text-dark: #3B2410;
+      --text-light: #EDE8DC;
+      --accent: #8B2E1A;
+      --max-w: 390px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Bradley Hand', cursive;
+      font-weight: normal;
+      color: var(--text-dark);
+      background: #EDE8DC;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .page-wrap {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      min-height: 100vh;
+      position: relative;
+      isolation: isolate;
+      background-image: url('bg.png');
+      background-size: cover;
+      background-position: center top;
+      background-attachment: scroll;
+      background-repeat: no-repeat;
+    }
+
+    /* Side ornaments — scroll with page, subtle float animation */
+    .side-ornaments {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .side-ornaments .ornament-left,
+    .side-ornaments .ornament-right {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 80px;
+      max-width: 22vw;
+      background-size: contain;
+      background-repeat: repeat-y;
+      background-position: top center;
+      animation: ornamentFloat 8s ease-in-out infinite;
+    }
+    .side-ornaments .ornament-left {
+      left: 0;
+      background-image: url('side ornaments light.png');
+    }
+    .side-ornaments .ornament-right {
+      right: 0;
+      background-image: url('side ornaments light.png');
+      transform: scaleX(-1);
+      animation-delay: -4s;
+    }
+    @keyframes ornamentFloat {
+      0%, 100% { opacity: 0.92; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-4px); }
+    }
+    .side-ornaments .ornament-right {
+      animation-name: ornamentFloatRight;
+    }
+    @keyframes ornamentFloatRight {
+      0%, 100% { opacity: 0.92; transform: scaleX(-1) translateY(0); }
+      50% { opacity: 1; transform: scaleX(-1) translateY(-4px); }
+    }
+
+    section { position: relative; z-index: 2; }
+
+    /* Language switcher */
+    .lang-switcher {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 100;
+      display: flex;
+      gap: 2px;
+      font-size: 12px;
+      font-family: 'Bradley Hand', cursive;
+    }
+    .lang-switcher button {
+      background: rgba(255,255,255,0.85);
+      border: 1px solid var(--secondary);
+      color: var(--text-dark);
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: inherit;
+    }
+    .lang-switcher button:hover { background: #fff; }
+    .lang-switcher button.active {
+      background: var(--primary);
+      color: var(--text-light);
+      border-color: var(--primary);
+    }
+    body.lang-ru .lang-kz { display: none !important; }
+    body.lang-kz .lang-ru { display: none !important; }
+
+    /* ----- HERO ----- */
+    .hero {
+      min-height: 848px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 24px 32px 48px;
+      padding-top: 32px;
+    }
+    .hero-sun {
+      width: 140px;
+      height: 140px;
+      margin-bottom: 24px;
+      animation: sunRotate 24s linear infinite;
+    }
+    @keyframes sunRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .hero .eyebrow {
+      font-size: 28px;
+      color: var(--secondary);
+      text-transform: uppercase;
+    }
+    .hero .bride-name {
+      font-size: 48px;
+      font-weight: normal;
+      color: var(--text-dark);
+      text-align: center;
+    }
+    .hero .divider-wrap { margin: 16px 0; text-align: center; }
+    .hero .divider-wrap img { max-width: 280px; height: auto; display: block; margin: 0 auto; }
+    .hero .date {
+      font-size: 28px;
+      color: var(--text-dark);
+    }
+    .hero .time {
+      font-size: 28px;
+      color: var(--text-dark);
+    }
+
+    /* Section divider */
+    .section-divider {
+      text-align: center;
+      padding: 18px 0;
+    }
+    .section-divider img {
+      max-width: 200px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Section fade-in */
+    .section-reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .section-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ----- INVITATION ----- */
+    .invitation {
+      padding: 24px 48px;
+      text-align: center;
+    }
+    .invitation .divider-wrap { margin: 0 auto 32px; }
+    .invitation h2 {
+      font-size: 24px;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+    .invitation .body {
+      font-size: 20px;
+      line-height: 1.65;
+      margin: 20px 0 0 0;
+      color: var(--text-dark);
+    }
+
+    /* ----- EVENT DETAILS ----- */
+    .empty-block {
+      padding: 48px 32px 56px;
+      height: 360px;
+    }
+    .event-card {
+      border: 1px solid var(--secondary);
+      border-radius: 16px;
+      padding: 24px 20px;
+      max-width: 320px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.3);
+    }
+    .event-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      color: var(--text-dark);
+    }
+    .event-row:last-child { margin-bottom: 0; }
+    .event-row .lang-kz { font-size: 13px; color: var(--secondary); display: block; margin-top: 2px; }
+
+    /* ----- WAITING / EVENT INFO ----- */
+    .waiting-block {
+      padding: 24px 48px;
+      color: var(--text-dark);
+      font-size: 16px;
+      text-align: center;
+    }
+    .waiting-block .line { margin-bottom: 4px; }
+    .waiting-block .highlight { color: var(--primary); font-weight: 500; font-size: 20px; margin-bottom: 16px; }
+    .waiting-block .line:last-child { margin-bottom: 0; }
+    .waiting-block .hint { font-size: 14px; margin-top: 20px; opacity: 0.95; }
+
+    /* ----- MAP ----- */
+    .map-section {
+      padding: 40px 32px 48px;
+    }
+    .map-section h2 {
+      font-size: 20px;
+      color: var(--text-dark);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .map-section h2 .lang-kz { font-size: 16px; color: var(--secondary); display: block; margin-top: 4px; }
+    .map-btn {
+      display: block;
+      width: 100%;
+      max-width: 140px;
+      margin: 16px auto 0;
+      padding: 16px 20px;
+      font-family: 'Bradley Hand', cursive;
+      font-size: 16px;
+      color: var(--primary);
+      background: transparent;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .map-btn:hover { background: var(--primary); color: var(--text-light); }
+
+    /* ----- FEEDBACK FORM ----- */
+    .rsvp {
+      margin: 0 32px 40px 32px;
+      padding: 16px;
+      border-radius: 8px;
+      background-color: var(--text-light);
+    }
+    .rsvp h2 {
+      font-size: 20px;
+      color: var(--text-dark);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .rsvp .subtitle {
+      font-size: 14px;
+      color: var(--text-dark);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .rsvp-form label { display: block; font-size: 14px; margin-bottom: 6px; color: var(--text-dark); }
+    .rsvp-form input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      font-family: 'Bradley Hand', cursive;
+      font-size: 14px;
+      border: 1px solid var(--secondary);
+      border-radius: 8px;
+      background: #fff;
+      margin-bottom: 8px;
+    }
+    .radio-group { margin-bottom: 8px; border: none;}
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .radio-option input { accent-color: var(--primary); }
+    .submit-btn {
+      width: 100%;
+      padding: 16px 20px;
+      font-family: 'Bradley Hand', cursive;
+      font-size: 16px;
+      color: var(--primary);
+      background: transparent;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .submit-btn:hover { filter: brightness(1.1); }
+    .thank-you {
+      display: none;
+      text-align: center;
+      padding: 32px 16px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .thank-you.visible { display: block; opacity: 1; }
+    .thank-you .msg { font-size: 20px; color: var(--text-dark); margin-bottom: 8px; }
+    .rsvp-form.hidden { display: none; }
+  </style>
+</head>
+<body class="lang-ru">
+  <nav class="lang-switcher" aria-label="Выбор языка">
+    <button type="button" class="active" data-lang="ru" aria-pressed="true">RU</button>
+    <button type="button" data-lang="kz" aria-pressed="false">KK</button>
+  </nav>
+  <div class="page-wrap">
+    <div class="side-ornaments" aria-hidden="true">
+      <div class="ornament-left"></div>
+      <div class="ornament-right"></div>
+    </div>
+
+    <section class="hero">
+      <img class="hero-sun" src="hero-sun.png" alt="" aria-hidden="true">
+      <h1 class="bride-name">Гиляна</h1>
+      <span class="eyebrow"><span class="lang-ru">Қыз ұзату</span><span class="lang-kz">Қыз ұзату</span></span>
+      <div class="divider-wrap">
+        <img src="divider.png" alt="" role="presentation">
+      </div>
+      <p class="date"><span class="lang-ru">19 июля 2026</span><span class="lang-kz">19 шілде 2026</span></p>
+      <p class="time">16:00</p>
+    </section>
+
+    <!-- Section divider -->
+    <div class="section-divider">
+      <img src="divider.png" alt="" role="presentation">
+    </div>
+
+    <!-- SECTION 2: INVITATION -->
+    <section class="invitation section-reveal">
+      <h2><span class="lang-ru">Дорогие гости</span><span class="lang-kz">Қымбатты қонақтар</span></h2>
+      <div class="body">
+        <p class="lang-ru">Этот день станет для нас важной главой, и мы будем счастливы, если вы станете её частью. Приглашаем вас разделить радость и атмосферу нашего события.</p>
+        <p class="lang-kz">Бұл күн біз үшін маңызды тарау болады және сіз оның бөлігі болсаңыз, біз бақытты боламыз. Біз сізді қызығушылығымызбен бөлісуге шақырамыз.</p>
+      </div>
+    </section>
+
+        <!-- Section divider -->
+        <div class="section-divider">
+          <img src="divider.png" alt="" role="presentation">
+        </div>
+
+        <div class="empty-block"></div>
+
+    <!-- SECTION 4: Ждем вас / event info -->
+    <section class="waiting-block section-reveal">
+      <p class="line"><span class="lang-ru">Ждем вас</span><span class="lang-kz">Сізді күтеміз</span></p>
+      <p class="line highlight"><span class="lang-ru">19 июля 2026</span><span class="lang-kz highlight">19 шілде 2026</span></p>
+      <p class="line"><span class="lang-ru">Начало в</span><span class="lang-kz">Басталуы</span></p>
+      <p class="line highlight"><span class="lang-ru">16:00</span><span class="lang-kz highlight">16:00</span></p>
+      <p class="line"><span class="lang-ru">По адресу</span><span class="lang-kz">Мекенжайы</span></p>
+      <p class="line highlight"><span class="lang-ru">г. Астана, улица Керей Жанибек хандар, 18, Тiлеп-Қобыз сарайы</span><span class="lang-kz highlight">Астана қ., Керей Жанибек хандар көшесі, 18, Тілеп-Қобыз сарайы</span></p>
+      <p class="line hint"><span class="lang-ru">Для вашего удобства просим воспользоваться картой 2GIS, указанной ниже</span><span class="lang-kz">Сіздің ыңғайлылығыңыз үшін төменде көрсетілген 2GIS картасын пайдалануды сұраймыз</span></p>
+      <a class="map-btn" href="https://2gis.kz/astana/geo/9570784863374841/71.425225,51.113772" target="_blank" rel="noopener"><span class="lang-ru">2GIS</span><span class="lang-kz">2GIS</span></a>
+    </section>
+
+    <div class="section-divider">
+      <img src="divider.png" alt="" role="presentation">
+    </div>
+
+    <!-- SECTION 5: FEEDBACK FORM -->
+    <section class="rsvp section-reveal">
+      <h2><span class="lang-ru">Анкета</span><span class="lang-kz">Сауалнама</span></h2>
+      <p class="subtitle"><span class="lang-ru">Просим подтвердить ваше присутствие</span><span class="lang-kz">Қатысуыңызды растауыңызды сұраймыз</span></p>
+      <div class="thank-you" id="thankYou">
+        <p class="msg"><span class="lang-ru">Спасибо! Ждём вас с нетерпением</span><span class="lang-kz">Рақмет! Сізді асыға күтеміз</span></p>
+      </div>
+      <form class="rsvp-form" id="rsvpForm" novalidate>
+        <label for="name"><span class="lang-ru">Имя и Фамилия *</span><span class="lang-kz">Аты-Жөні *</span></label>
+        <input type="text" id="name" name="name" placeholder="" required aria-required="true">
+        <fieldset class="radio-group">
+          <label class="radio-option"><input type="radio" name="attend" value="will_be" checked> <span class="lang-ru">Буду</span><span class="lang-kz">Келемін</span></label>
+          <label class="radio-option"><input type="radio" name="attend" value="will_not_be"> <span class="lang-ru">Не буду</span><span class="lang-kz">Келе алмаймын</span></label>
+        </fieldset>
+        <button type="submit" class="submit-btn"><span class="lang-ru">Отправить</span><span class="lang-kz">Жіберу</span></button>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    // Set this to your backend or form service URL to save responses (e.g. Formspree, Netlify Forms, or your API).
+    const FORM_ENDPOINT = '';
+
+    // Language switcher
+    function setLang(lang) {
+      document.body.className = 'lang-' + lang;
+      document.documentElement.lang = lang === 'kz' ? 'kk' : 'ru';
+      document.querySelectorAll('.lang-switcher button').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+        b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false');
+      });
+      const nameInput = document.getElementById('name');
+      if (nameInput) nameInput.placeholder = lang === 'kz' ? 'Аты-Жөні' : 'Имя и Фамилия';
+    }
+    document.querySelectorAll('.lang-switcher button').forEach(btn => {
+      btn.addEventListener('click', function() { setLang(this.getAttribute('data-lang')); });
+    });
+    setLang('ru');
+
+    // IntersectionObserver for section reveal
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.section-reveal').forEach(el => sectionObserver.observe(el));
+
+    document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      if (!name) { document.getElementById('name').focus(); return; }
+      const attend = document.querySelector('input[name="attend"]:checked');
+      const attendValue = attend ? attend.value : '';
+      const payload = { name, attend: attendValue };
+
+      if (FORM_ENDPOINT) {
+        // Formspree and most form services expect form data, not JSON
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('attend', attendValue);
+        fetch(FORM_ENDPOINT, { method: 'POST', body: formData })
+          .then(() => showThankYou())
+          .catch(() => { console.log('Form data:', payload); showThankYou(); });
+      } else {
+        console.log('Feedback payload:', payload);
+        showThankYou();
+      }
+    });
+
+    function showThankYou() {
+      document.getElementById('rsvpForm').classList.add('hidden');
+      document.getElementById('thankYou').classList.add('visible');
+    }
+  </script>
+</body>
+</html>
