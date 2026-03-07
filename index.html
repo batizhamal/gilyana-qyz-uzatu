@@ -354,6 +354,16 @@
   </style>
 </head>
 <body class="lang-ru">
+  <!-- Load Bradley Hand via JS so it works on Android when @font-face fails -->
+  <script>
+  (function() {
+    var base = location.pathname.replace(/[^/]*$/, '') || '/';
+    var fontUrl = location.origin + base + 'BradleyHand.ttf';
+    if (!document.fonts || !document.fonts.add) return;
+    var font = new FontFace('Bradley Hand', 'url(' + fontUrl + ')', { weight: 'normal', style: 'normal' });
+    font.load().then(function(loaded) { document.fonts.add(loaded); }).catch(function() {});
+  })();
+  </script>
   <nav class="lang-switcher" aria-label="Выбор языка">
     <button type="button" class="active" data-lang="ru" aria-pressed="true">RU</button>
     <button type="button" data-lang="kz" aria-pressed="false">KK</button>
