@@ -7,16 +7,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Preload both formats for Android -->
-
+  <link rel="preload" href="./AsiaAS-Normal.ttf" as="font" type="font/ttf" crossorigin>
   <style>
     @font-face {
-      font-family: 'Bradley Hand';
-      src: url('./BRADHI.ttf') format('woff2'),
-           url('./BRADHI.ttf') format('truetype');
+      font-family: 'AsiaAS';
+      src: url('./AsiaAS-Normal.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
-      font-display: block;
+      font-display: swap;
     }
 
     :root {
@@ -26,7 +24,7 @@
       --text-light: #EDE8DC;
       --accent: #8B2E1A;
       --max-w: 390px;
-      --font-main: 'Bradley Hand', 'Comfortaa', cursive, sans-serif;
+      --font-main: 'AsiaAS', 'Comfortaa', cursive, sans-serif;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -108,7 +106,7 @@
       z-index: 100;
       display: flex;
       gap: 2px;
-      font-size: 12px;
+      font-size: 16px;
       font-family: var(--font-main);
     }
     .lang-switcher button {
@@ -151,12 +149,12 @@
       to { transform: rotate(360deg); }
     }
     .hero .eyebrow {
-      font-size: 28px;
+      font-size: 36px;
       color: var(--secondary);
       text-transform: uppercase;
     }
     .hero .bride-name {
-      font-size: 48px;
+      font-size: 60px;
       font-weight: normal;
       color: var(--text-dark);
       text-align: center;
@@ -164,11 +162,11 @@
     .hero .divider-wrap { margin: 16px 0; text-align: center; }
     .hero .divider-wrap img { max-width: 280px; height: auto; display: block; margin: 0 auto; }
     .hero .date {
-      font-size: 28px;
+      font-size: 32px;
       color: var(--text-dark);
     }
     .hero .time {
-      font-size: 28px;
+      font-size: 32px;
       color: var(--text-dark);
     }
 
@@ -202,13 +200,13 @@
     }
     .invitation .divider-wrap { margin: 0 auto 32px; }
     .invitation h2 {
-      font-size: 24px;
+      font-size: 32px;
       color: var(--text-dark);
       margin-bottom: 6px;
     }
     .invitation .body {
-      font-size: 20px;
-      line-height: 1.65;
+      font-size: 28px;
+      line-height: 2rem;
       margin: 20px 0 0 0;
       color: var(--text-dark);
     }
@@ -231,43 +229,43 @@
       align-items: flex-start;
       gap: 12px;
       margin-bottom: 16px;
-      font-size: 14px;
+      font-size: 18px;
       color: var(--text-dark);
     }
     .event-row:last-child { margin-bottom: 0; }
-    .event-row .lang-kz { font-size: 13px; color: var(--secondary); display: block; margin-top: 2px; }
+    .event-row .lang-kz { font-size: 17px; color: var(--secondary); display: block; margin-top: 2px; }
 
     /* ----- WAITING / EVENT INFO ----- */
     .waiting-block {
       padding: 24px 48px;
       color: var(--text-dark);
-      font-size: 16px;
+      font-size: 28px;
       text-align: center;
     }
     .waiting-block .line { margin-bottom: 4px; }
-    .waiting-block .highlight { color: var(--primary); font-weight: 500; font-size: 20px; margin-bottom: 16px; }
+    .waiting-block .highlight { color: var(--primary); font-weight: 500; font-size: 32px; margin-bottom: 16px; }
     .waiting-block .line:last-child { margin-bottom: 0; }
-    .waiting-block .hint { font-size: 14px; margin-top: 20px; opacity: 0.95; }
+    .waiting-block .hint { font-size: 18px; margin-top: 20px; opacity: 0.95; }
 
     /* ----- MAP ----- */
     .map-section {
       padding: 40px 32px 48px;
     }
     .map-section h2 {
-      font-size: 20px;
+      font-size: 24px;
       color: var(--text-dark);
       text-align: center;
       margin-bottom: 8px;
     }
-    .map-section h2 .lang-kz { font-size: 16px; color: var(--secondary); display: block; margin-top: 4px; }
+    .map-section h2 .lang-kz { font-size: 20px; color: var(--secondary); display: block; margin-top: 4px; }
     .map-btn {
       display: block;
       width: 100%;
       max-width: 140px;
       margin: 16px auto 0;
-      padding: 16px 20px;
+      padding: 8px 8px;
       font-family: var(--font-main);
-      font-size: 16px;
+      font-size: 32px;
       color: var(--primary);
       background: transparent;
       border: 2px solid var(--primary);
@@ -286,23 +284,22 @@
       background-color: var(--text-light);
     }
     .rsvp h2 {
-      font-size: 20px;
+      font-size: 32px;
       color: var(--text-dark);
       text-align: center;
-      margin-bottom: 8px;
     }
     .rsvp .subtitle {
-      font-size: 14px;
+      font-size: 28px;
       color: var(--text-dark);
       text-align: center;
       margin-bottom: 16px;
     }
-    .rsvp-form label { display: block; font-size: 14px; margin-bottom: 6px; color: var(--text-dark); }
+    .rsvp-form label { display: block; font-size: 28px; margin-bottom: 6px; color: var(--text-dark); }
     .rsvp-form input[type="text"] {
       width: 100%;
-      padding: 12px 14px;
+      padding: 8px;
       font-family: var(--font-main);
-      font-size: 14px;
+      font-size: 28px;
       border: 1px solid var(--secondary);
       border-radius: 8px;
       background: #fff;
@@ -320,9 +317,9 @@
     .submit-btn {
       position: relative;
       width: 100%;
-      padding: 16px 20px;
+      padding: 8px;
       font-family: var(--font-main);
-      font-size: 16px;
+      font-size: 32px;
       color: var(--primary);
       background: transparent;
       border: 2px solid var(--primary);
@@ -345,7 +342,7 @@
       transition: opacity 0.5s ease;
     }
     .thank-you.visible { display: block; opacity: 1; }
-    .thank-you .msg { font-size: 20px; color: var(--text-dark); margin-bottom: 8px; }
+    .thank-you .msg { font-size: 24px; color: var(--text-dark); margin-bottom: 8px; }
     .rsvp-form.hidden { display: none; }
   </style>
 </head>
@@ -397,7 +394,6 @@
       <p class="line highlight"><span class="lang-ru">16:00</span><span class="lang-kz highlight">16:00</span></p>
       <p class="line"><span class="lang-ru">По адресу</span><span class="lang-kz">Мекенжайы</span></p>
       <p class="line highlight"><span class="lang-ru">г. Астана, улица Керей Жанибек хандар, 18, Тiлеп-Қобыз сарайы</span><span class="lang-kz highlight">Астана қ., Керей Жанибек хандар көшесі, 18, Тілеп-Қобыз сарайы</span></p>
-      <p class="line hint"><span class="lang-ru">Для вашего удобства просим воспользоваться картой 2GIS, указанной ниже</span><span class="lang-kz">Сіздің ыңғайлылығыңыз үшін төменде көрсетілген 2GIS картасын пайдалануды сұраймыз</span></p>
       <a class="map-btn" href="https://2gis.kz/astana/geo/9570784863374841/71.425225,51.113772" target="_blank" rel="noopener"><span class="lang-ru">2GIS</span><span class="lang-kz">2GIS</span></a>
     </section>
 
