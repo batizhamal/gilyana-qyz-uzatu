@@ -8,16 +8,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
   <!-- Preload both formats for Android -->
-  <link rel="preload" href="./BradleyHand.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-  <link rel="preload" href="./BradleyHand.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
   <style>
     @font-face {
       font-family: 'Bradley Hand';
-      src: url('./BradleyHand.woff2') format('woff2'),
-           url('./BradleyHand.ttf') format('truetype');
+      src: url('./BRADHI.ttf') format('woff2'),
+           url('./BRADHI.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
-      /* 'block' prevents Android from skipping the font before it loads */
       font-display: block;
     }
 
@@ -352,52 +350,6 @@
   </style>
 </head>
 <body class="lang-ru">
-  <!--
-    ANDROID FONT FIX:
-    1. We use document.fonts.load() which is the most reliable cross-browser API.
-    2. We build an absolute URL with no reliance on location.pathname tricks.
-    3. On load success we force a repaint so Android redraws text in the new font.
-    4. As a belt-and-suspenders fallback we also inject a second @font-face rule
-       with an absolute URL, which helps on some Android WebView versions.
-  -->
-  <script>
-  (function () {
-    // Build an absolute base URL robustly, handling both root and subdirectory deploys
-    var scriptSrc = document.currentScript && document.currentScript.src;
-    var base;
-    if (scriptSrc) {
-      base = scriptSrc.substring(0, scriptSrc.lastIndexOf('/') + 1);
-    } else {
-      var p = location.pathname;
-      base = location.origin + (p.endsWith('/') ? p : p.substring(0, p.lastIndexOf('/') + 1));
-    }
-
-    var ttfUrl   = base + 'BradleyHand.ttf';
-    var woff2Url = base + 'BradleyHand.woff2';
-
-    // Inject a second @font-face with absolute URLs as Android WebView fallback
-    var style = document.createElement('style');
-    style.textContent =
-      "@font-face{font-family:'Bradley Hand';src:url('" + woff2Url + "') format('woff2')," +
-      "url('" + ttfUrl + "') format('truetype');font-weight:normal;font-style:normal;font-display:block;}";
-    document.head.appendChild(style);
-
-    // Use the Font Loading API for a guaranteed load + repaint trigger
-    if (document.fonts && document.fonts.load) {
-      document.fonts.load("normal 16px 'Bradley Hand'", 'Гиляна').then(function (faces) {
-        if (faces.length > 0) {
-          // Force repaint so Android applies the newly loaded font
-          document.body.style.visibility = 'hidden';
-          requestAnimationFrame(function () {
-            requestAnimationFrame(function () {
-              document.body.style.visibility = '';
-            });
-          });
-        }
-      }).catch(function () { /* silently fall back to Comfortaa */ });
-    }
-  })();
-  </script>
 
   <nav class="lang-switcher" aria-label="Выбор языка">
     <button type="button" class="active" data-lang="ru" aria-pressed="true">RU</button>
