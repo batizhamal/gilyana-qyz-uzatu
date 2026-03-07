@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=390, user-scalable=no">
   <title>Қыз Ұзату - Гиляна</title>
+  <!-- Cyrillic-capable fallback so text never shows empty boxes on Android -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
   <!-- Preload TTF for Android; use same path as in @font-face -->
   <link rel="preload" href="./BradleyHand.ttf" as="font" type="font/ttf" crossorigin>
   <style>
@@ -26,12 +30,13 @@
       --text-light: #EDE8DC;
       --accent: #8B2E1A;
       --max-w: 390px;
+    --font-main: 'Bradley Hand', 'Comfortaa', cursive, sans-serif;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Bradley Hand', cursive;
+      font-family: var(--font-main);
       font-weight: normal;
       color: var(--text-dark);
       background: #EDE8DC;
@@ -108,7 +113,7 @@
       display: flex;
       gap: 2px;
       font-size: 12px;
-      font-family: 'Bradley Hand', cursive;
+      font-family: var(--font-main);
     }
     .lang-switcher button {
       background: rgba(255,255,255,0.85);
@@ -265,7 +270,7 @@
       max-width: 140px;
       margin: 16px auto 0;
       padding: 16px 20px;
-      font-family: 'Bradley Hand', cursive;
+      font-family: var(--font-main);
       font-size: 16px;
       color: var(--primary);
       background: transparent;
@@ -300,7 +305,7 @@
     .rsvp-form input[type="text"] {
       width: 100%;
       padding: 12px 14px;
-      font-family: 'Bradley Hand', cursive;
+      font-family: var(--font-main);
       font-size: 14px;
       border: 1px solid var(--secondary);
       border-radius: 8px;
@@ -320,7 +325,7 @@
       position: relative;
       width: 100%;
       padding: 16px 20px;
-      font-family: 'Bradley Hand', cursive;
+      font-family: var(--font-main);
       font-size: 16px;
       color: var(--primary);
       background: transparent;
