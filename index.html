@@ -4,15 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=390, user-scalable=no">
   <title>Қыз Ұзату - Гиляна</title>
+  <!-- Preload TTF for Android; use same path as in @font-face -->
+  <link rel="preload" href="./BradleyHand.ttf" as="font" type="font/ttf" crossorigin>
   <style>
     @font-face {
       font-family: 'Bradley Hand';
-      src: local('Bradley Hand ITC'), local('Bradley Hand'),
-           url('./BradleyHand.woff2') format('woff2'),
+      /* URL sources first so Android loads the file; local() last */
+      src: url('./BradleyHand.woff2') format('woff2'),
+           url('./BradleyHand.ttf') format('truetype'),
            url('./BradleyHand.woff') format('woff'),
-           url('./BradleyHand.ttf') format('truetype');
+           local('Bradley Hand ITC'), local('Bradley Hand');
       font-weight: normal;
       font-style: normal;
+      font-display: swap;
     }
 
     :root {
