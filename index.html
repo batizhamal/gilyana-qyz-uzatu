@@ -4,23 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=390, user-scalable=no">
   <title>Қыз Ұзату - Гиляна</title>
-  <!-- Cyrillic-capable fallback so text never shows empty boxes on Android -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Preload TTF for Android; use same path as in @font-face -->
-  <link rel="preload" href="./BradleyHand.ttf" as="font" type="font/ttf" crossorigin>
+  <!-- Preload both formats for Android -->
+  <link rel="preload" href="./BradleyHand.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="./BradleyHand.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <style>
     @font-face {
       font-family: 'Bradley Hand';
-      /* URL sources first so Android loads the file; local() last */
       src: url('./BradleyHand.woff2') format('woff2'),
-           url('./BradleyHand.ttf') format('truetype'),
-           url('./BradleyHand.woff') format('woff'),
-           local('Bradley Hand ITC'), local('Bradley Hand');
+           url('./BradleyHand.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
-      font-display: swap;
+      /* 'block' prevents Android from skipping the font before it loads */
+      font-display: block;
     }
 
     :root {
@@ -30,7 +28,7 @@
       --text-light: #EDE8DC;
       --accent: #8B2E1A;
       --max-w: 390px;
-    --font-main: 'Bradley Hand', 'Comfortaa', cursive, sans-serif;
+      --font-main: 'Bradley Hand', 'Comfortaa', cursive, sans-serif;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -57,7 +55,7 @@
       background-repeat: no-repeat;
     }
 
-    /* Side ornaments — scroll with page, subtle float animation */
+    /* Side ornaments */
     .side-ornaments {
       position: absolute;
       top: 0;
@@ -354,16 +352,53 @@
   </style>
 </head>
 <body class="lang-ru">
-  <!-- Load Bradley Hand via JS so it works on Android when @font-face fails -->
+  <!--
+    ANDROID FONT FIX:
+    1. We use document.fonts.load() which is the most reliable cross-browser API.
+    2. We build an absolute URL with no reliance on location.pathname tricks.
+    3. On load success we force a repaint so Android redraws text in the new font.
+    4. As a belt-and-suspenders fallback we also inject a second @font-face rule
+       with an absolute URL, which helps on some Android WebView versions.
+  -->
   <script>
-  (function() {
-    var base = location.pathname.replace(/[^/]*$/, '') || '/';
-    var fontUrl = location.origin + base + 'BradleyHand.ttf';
-    if (!document.fonts || !document.fonts.add) return;
-    var font = new FontFace('Bradley Hand', 'url(' + fontUrl + ')', { weight: 'normal', style: 'normal' });
-    font.load().then(function(loaded) { document.fonts.add(loaded); }).catch(function() {});
+  (function () {
+    // Build an absolute base URL robustly, handling both root and subdirectory deploys
+    var scriptSrc = document.currentScript && document.currentScript.src;
+    var base;
+    if (scriptSrc) {
+      base = scriptSrc.substring(0, scriptSrc.lastIndexOf('/') + 1);
+    } else {
+      var p = location.pathname;
+      base = location.origin + (p.endsWith('/') ? p : p.substring(0, p.lastIndexOf('/') + 1));
+    }
+
+    var ttfUrl   = base + 'BradleyHand.ttf';
+    var woff2Url = base + 'BradleyHand.woff2';
+
+    // Inject a second @font-face with absolute URLs as Android WebView fallback
+    var style = document.createElement('style');
+    style.textContent =
+      "@font-face{font-family:'Bradley Hand';src:url('" + woff2Url + "') format('woff2')," +
+      "url('" + ttfUrl + "') format('truetype');font-weight:normal;font-style:normal;font-display:block;}";
+    document.head.appendChild(style);
+
+    // Use the Font Loading API for a guaranteed load + repaint trigger
+    if (document.fonts && document.fonts.load) {
+      document.fonts.load("normal 16px 'Bradley Hand'", 'Гиляна').then(function (faces) {
+        if (faces.length > 0) {
+          // Force repaint so Android applies the newly loaded font
+          document.body.style.visibility = 'hidden';
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              document.body.style.visibility = '';
+            });
+          });
+        }
+      }).catch(function () { /* silently fall back to Comfortaa */ });
+    }
   })();
   </script>
+
   <nav class="lang-switcher" aria-label="Выбор языка">
     <button type="button" class="active" data-lang="ru" aria-pressed="true">RU</button>
     <button type="button" data-lang="kz" aria-pressed="false">KK</button>
@@ -385,12 +420,10 @@
       <p class="time">16:00</p>
     </section>
 
-    <!-- Section divider -->
     <div class="section-divider">
       <img src="divider.png" alt="" role="presentation">
     </div>
 
-    <!-- SECTION 2: INVITATION -->
     <section class="invitation section-reveal">
       <h2><span class="lang-ru">Дорогие гости</span><span class="lang-kz">Қымбатты қонақтар</span></h2>
       <div class="body">
@@ -399,14 +432,12 @@
       </div>
     </section>
 
-        <!-- Section divider -->
-        <div class="section-divider">
-          <img src="divider.png" alt="" role="presentation">
-        </div>
+    <div class="section-divider">
+      <img src="divider.png" alt="" role="presentation">
+    </div>
 
-        <div class="empty-block"></div>
+    <div class="empty-block"></div>
 
-    <!-- SECTION 4: Ждем вас / event info -->
     <section class="waiting-block section-reveal">
       <p class="line"><span class="lang-ru">Ждем вас</span><span class="lang-kz">Сізді күтеміз</span></p>
       <p class="line highlight"><span class="lang-ru">19 июля 2026</span><span class="lang-kz highlight">19 шілде 2026</span></p>
@@ -422,7 +453,6 @@
       <img src="divider.png" alt="" role="presentation">
     </div>
 
-    <!-- SECTION 5: FEEDBACK FORM -->
     <section class="rsvp section-reveal">
       <h2><span class="lang-ru">Анкета</span><span class="lang-kz">Сауалнама</span></h2>
       <p class="subtitle"><span class="lang-ru">Просим подтвердить ваше присутствие</span><span class="lang-kz">Қатысуыңызды растауыңызды сұраймыз</span></p>
@@ -442,10 +472,8 @@
   </div>
 
   <script>
-    // Set this to your backend or form service URL to save responses (e.g. Formspree, Netlify Forms, or your API).
     const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwovSZLCrjnNeFxNDxoi08Y8XAh8rzi2MEfbWVjWcjwaKClrZv2IFWbAPBfIw4JzNjg/exec';
 
-    // Language switcher
     function setLang(lang) {
       document.body.className = 'lang-' + lang;
       document.documentElement.lang = lang === 'kz' ? 'kk' : 'ru';
@@ -461,7 +489,6 @@
     });
     setLang('ru');
 
-    // IntersectionObserver for section reveal
     const sectionObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
